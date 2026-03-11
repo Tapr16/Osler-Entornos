@@ -25,7 +25,7 @@ El objetivo del proyecto es desarrollar una herramienta que permita:
 # 🧰 Tecnologías utilizadas
 
 ## Frontend
-- React.js
+- Javascript
 
 ## Backend
 - Node.js

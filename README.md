@@ -81,6 +81,7 @@ La base de datos fue diseñada utilizando un **modelo relacional**, representado
 - Rol
 - Paciente
 - Doctor
+- Especialidad
 - Calendario
 - Cita médica
 - Historial clínico

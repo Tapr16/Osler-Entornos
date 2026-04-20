@@ -25,14 +25,16 @@ El objetivo del proyecto es desarrollar una herramienta que permita:
 # 🧰 Tecnologías utilizadas
 
 ## Frontend
-- Javascript
+- HTML
+- CSS
+- JavaScript
 
 ## Backend
 - Node.js
 - Express.js
 
 ## Base de datos
-- PostgreSQL
+- MySQL
 
 ## Herramientas de desarrollo
 - Git (control de versiones)

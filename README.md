@@ -30,8 +30,7 @@ El objetivo del proyecto es desarrollar una herramienta que permita:
 - JavaScript
 
 ## Backend
-- Node.js
-- Express.js
+- Spring Boot (Java)
 
 ## Base de datos
 - MySQL

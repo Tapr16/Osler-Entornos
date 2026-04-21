@@ -79,13 +79,13 @@ La base de datos fue diseñada utilizando un **modelo relacional**, representado
 
 ## Entidades principales del sistema
 
-- Usuario
+- Usuarios
 - Rol
-- Paciente
-- Doctor
-- Especialidad
+- Pacientes
+- Doctores
+- Especialidades
 - Calendario
-- Cita médica
+- Citas médicas
 - Historial clínico
 - Tratamiento
 - Enfermedad

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Osler — Dashboard</title>
+    <link rel="stylesheet" href="../css/global.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">⚕</div>
+        <span class="sidebar-title">Osler</span>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Inicio</span>
+        </a>
+        <a href="pacientes.html" class="nav-item">
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Pacientes</span>
+        </a>
+        <a href="doctores.html" class="nav-item">
+            <span class="nav-icon">🩺</span>
+            <span class="nav-label">Doctores</span>
+        </a>
+        <a href="citas.html" class="nav-item">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Citas</span>
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-info" id="userInfo"></div>
+        <button class="btn-logout" onclick="logout()">🚪 Cerrar sesión</button>
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+    <header class="top-bar">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <h1 class="page-title">Dashboard</h1>
+        <span class="top-bar-user" id="topUser"></span>
+    </header>
+
+    <div class="content-area">
+        <div class="welcome-banner">
+            <div>
+                <h2 id="welcomeMsg">Bienvenido</h2>
+                <p>Sistema de Gestión Médica Integral · Osler</p>
+            </div>
+            <span class="welcome-icon">🏥</span>
+        </div>
+
+        <!-- Stats cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <span class="stat-number" id="statPacientes">—</span>
+                    <span class="stat-label">Pacientes registrados</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🩺</div>
+                <div class="stat-info">
+                    <span class="stat-number" id="statDoctores">—</span>
+                    <span class="stat-label">Doctores activos</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-info">
+                    <span class="stat-number" id="statCitas">—</span>
+                    <span class="stat-label">Citas programadas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accesos rápidos -->
+        <div class="quick-actions">
+            <h3>Acciones rápidas</h3>
+            <div class="actions-grid">
+                <a href="pacientes.html" class="action-card">
+                    <span class="action-icon">➕</span>
+                    <span>Nuevo Paciente</span>
+                </a>
+                <a href="doctores.html" class="action-card">
+                    <span class="action-icon">➕</span>
+                    <span>Nuevo Doctor</span>
+                </a>
+                <a href="citas.html" class="action-card">
+                    <span class="action-icon">📋</span>
+                    <span>Agendar Cita</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="../js/auth.js"></script>
+<script>
+    // Protege la página — redirige si no hay token
+    requireAuth();
+
+    const user = getUser();
+    document.getElementById('welcomeMsg').textContent = `Bienvenido, ${user.nombre} ${user.apellido}`;
+    document.getElementById('topUser').textContent = `${user.nombre} (${user.rol})`;
+    document.getElementById('userInfo').innerHTML = `
+        <strong>${user.nombre} ${user.apellido}</strong><br>
+        <small>${user.rol}</small>
+    `;
+
+    // Carga estadísticas
+    async function loadStats() {
+        try {
+            const headers = authHeaders();
+
+            const [resPac] = await Promise.all([
+                fetch('http://localhost:8080/api/pacientes', { headers })
+            ]);
+
+            if (resPac.ok) {
+                const pacientes = await resPac.json();
+                document.getElementById('statPacientes').textContent = pacientes.length;
+            }
+
+            // Los otros CRUDs los llenarán tus compañeros
+            document.getElementById('statDoctores').textContent = '—';
+            document.getElementById('statCitas').textContent = '—';
+        } catch (e) {
+            console.warn('No se pudieron cargar estadísticas:', e);
+        }
+    }
+
+    loadStats();
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+</script>
+</body>
+</html>

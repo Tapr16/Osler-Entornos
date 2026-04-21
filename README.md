@@ -51,26 +51,6 @@ El desarrollo del proyecto se gestiona mediante **Jira**, donde se organizan los
 
 https://entornos-osler.atlassian.net/jira/software/projects/OSLER/summary?atlOrigin=eyJpIjoiZTRhN2I4NWRlNjZjNDhiNjk3ODYxYjA4ZDZkZTZhYjYiLCJwIjoiaiJ9
 
-En esta plataforma se gestionan:
-
-- Backlog del proyecto
-- Tareas del sprint
-- Seguimiento del desarrollo
-- Organización de hitos
-
-Entre las tareas registradas en el proyecto se encuentran:
-
-- Configuración del proyecto en Jira
-- Creación del repositorio Git
-- Definición de ramas
-- Diseño de la base de datos
-- Configuración inicial del backend Node.js
-- Configuración inicial del frontend React.js
-- Conexión con PostgreSQL
-- Implementación del sistema de login
-- Desarrollo del CRUD de usuarios
-- Validación de roles y permisos
-
 ---
 
 # 🗄️ Modelo de base de datos
@@ -201,21 +181,6 @@ Osler-Entornos/
 
 El proyecto utiliza **Git** para el control de versiones.
 
-# 🚧 Estado del proyecto
-
-Actualmente el proyecto se encuentra en fase de **desarrollo inicial**.  
-Durante los primeros sprints se han completado las siguientes actividades:
-
-- Definición del alcance del sistema
-- Identificación de requerimientos
-- Diseño del modelo de base de datos
-- Configuración del entorno de desarrollo
-- Creación del repositorio Git
-- Configuración del tablero de gestión del proyecto en Jira
-
-Los próximos sprints estarán enfocados en el desarrollo de las funcionalidades principales del sistema.
-
----
 
 # 📄 Licencia
 

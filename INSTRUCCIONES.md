@@ -71,6 +71,16 @@ Todos los endpoints de /api/pacientes requieren header:
 ```
 Authorization: Bearer <token>
 ```
+### Doctores (Jesus)
+| Método | URL | Descripción |
+|--------|-----|-------------|
+| GET | /api/doctores | Listar todos |
+| GET | /api/doctores/{id} | Obtener uno |
+| GET | /api/doctores/buscar?q=... | Buscar |
+| GET | /api/especialidades | Listar especialidades |
+| POST | /api/doctores | Crear |
+| PUT | /api/doctores/{id} | Actualizar |
+| DELETE | /api/doctores/{id} | Eliminar (soft) |
 
 ## 5. Estructura del JWT
 

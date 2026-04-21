@@ -1,0 +1,15 @@
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\entity\Usuario.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\config\DataInitializer.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\config\SecurityConfig.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\repository\PacienteRepository.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\security\JwtUtil.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\dto\AuthDTOs.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\controller\AuthController.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\security\JwtAuthFilter.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\entity\Paciente.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\security\UserDetailsServiceImpl.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\dto\PacienteDTO.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\entity\Rol.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\OslerApplication.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\repository\UsuarioRepository.java
+C:\Users\Thomas\Downloads\osler-proyecto\backend\src\main\java\com\osler\controller\PacienteController.java

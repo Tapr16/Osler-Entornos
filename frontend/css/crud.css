@@ -1,0 +1,151 @@
+/* ============================================================
+   crud.css — Estilos para páginas de CRUD (tabla + modal)
+   ============================================================ */
+
+/* --- Toolbar (búsqueda + botón crear) --- */
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 240px;
+    max-width: 420px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+}
+.search-box:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+.search-box input {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: .55rem .9rem;
+    flex: 1;
+}
+.search-box input:focus { box-shadow: none; border: none; }
+.search-box button {
+    background: var(--color-primary);
+    border: none;
+    padding: .55rem .9rem;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #fff;
+    transition: background .15s;
+}
+.search-box button:hover { background: var(--color-primary-dark); }
+
+/* --- Alerta global en la página --- */
+#alertMsg {
+    position: sticky;
+    top: calc(var(--topbar-h) + .5rem);
+    z-index: 40;
+    margin-bottom: 1rem;
+}
+
+/* --- Tabla --- */
+.table-wrapper {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: auto;
+    box-shadow: var(--shadow-sm);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .9rem;
+    min-width: 700px;
+}
+
+.data-table thead tr {
+    background: var(--bg-body);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.data-table th {
+    padding: .75rem 1rem;
+    text-align: left;
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.data-table td {
+    padding: .8rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+.data-table tbody tr:hover { background: #f7faff; }
+
+/* Celdas especiales */
+.name-cell {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    font-size: .78rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: .04em;
+}
+
+.actions-cell {
+    display: flex;
+    gap: .4rem;
+    white-space: nowrap;
+}
+
+.btn-icon {
+    background: none;
+    border: 1.5px solid var(--border-color);
+    border-radius: 7px;
+    cursor: pointer;
+    padding: .35rem .5rem;
+    font-size: .95rem;
+    transition: background .15s, border-color .15s;
+}
+.btn-edit:hover   { background: #ebf8ff; border-color: var(--color-primary); }
+.btn-delete:hover { background: #fff5f5; border-color: var(--color-danger); }
+
+/* Estados de tabla */
+.loading-row, .empty-row, .error-row {
+    text-align: center;
+    padding: 2.5rem !important;
+    color: var(--text-muted);
+}
+.error-row { color: var(--color-danger); }
+
+/* Footer de tabla */
+.table-footer {
+    margin-top: .6rem;
+    font-size: .82rem;
+    color: var(--text-muted);
+    text-align: right;
+}

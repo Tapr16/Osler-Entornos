@@ -119,7 +119,7 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Hora</th>
+                            <th>Fecha y Hora</th>
                             <th>Paciente</th>
                             <th>Motivo</th>
                             <th>Estado</th>
@@ -306,7 +306,10 @@
                     } else {
                         tbody.innerHTML = citas.map(c => `
                             <tr>
-                                <td>${new Date(c.fechaHora).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                                <td>
+                                    <div style="font-weight:600;">${new Date(c.fechaHora).toLocaleDateString()}</div>
+                                    <div style="font-size:0.85rem; color:var(--text-muted);">${new Date(c.fechaHora).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                                </td>
                                 <td>${c.pacienteNombre}</td>
                                 <td>${c.motivo}</td>
                                 <td><span class="badge ${c.estado.toLowerCase()}">${c.estado}</span></td>

@@ -65,118 +65,52 @@ La base de datos fue diseñada utilizando un **modelo relacional**, representado
 - Calendario
 - Citas médicas
 - Historial clínico
-- Tratamiento
-- Enfermedad
-- Alergia
-- Contacto de emergencia
-
-El diseño garantiza **integridad referencial mediante claves foráneas**, permitiendo una estructura escalable para futuras funcionalidades del sistema.
 
 ---
 
-# ⚙️ Funcionalidades principales del sistema
+# 🚀 Funcionalidades Principales
 
-## 🔐 Autenticación
+### 🔐 Seguridad y Acceso
+- **Autenticación JWT**: Inicio de sesión seguro con roles diferenciados.
+- **Gestión de Perfil**: Actualización de datos personales y cambio de contraseña con validación de seguridad.
 
-- Inicio de sesión seguro
-- Validación de credenciales
-- Gestión de roles y permisos
+### 👨‍⚕️ Dashboard del Doctor (Especializado)
+- **Agenda Médica**: Visualización de turnos mediante calendario interactivo.
+- **Historial Clínico**: Registro detallado de consultas, diagnósticos y tratamientos.
+- **Control de Turnos**: Gestión de estados (Programada, Atendida, Cancelada).
 
-## 👤 Gestión de usuarios
-
-- Crear usuarios
-- Consultar usuarios
-- Actualizar información
-- Eliminar usuarios
-
-## 🏥 Gestión médica
-
-- Administración de pacientes
-- Registro de doctores
-- Programación de citas médicas
-- Gestión de calendarios médicos
-
-## 📑 Historial clínico
-
-- Registro de observaciones médicas
-- Registro de enfermedades
-- Registro de alergias
-- Registro de tratamientos
-
-## 📞 Información adicional
-
-- Contactos de emergencia para pacientes
+### 👤 Dashboard del Paciente (Especializado)
+- **Mis Citas**: Seguimiento de citas pendientes y consultas pasadas.
+- **Agendamiento**: Interfaz intuitiva para solicitar nuevas citas con especialistas.
+- **Consulta de Historial**: Acceso a los registros médicos emitidos por los profesionales.
 
 ---
 
-# 📁 Estructura del repositorio
+# 📁 Estructura del Repositorio
 
-```
-Osler-Entornos/
-│
-├── base-de-datos/
-│   └── osler-db.sql                  # Script completo de la BD
-│
+```text
+Osler/
 ├── backend/
-│   ├── pom.xml                       # Dependencias Maven
-│   └── src/main/java/com/osler/
-│       ├── OslerApplication.java     # Punto de entrada Spring Boot
-│       │
-│       ├── config/
-│       │   ├── DataInitializer.java  # Crea usuario admin al arrancar
-│       │   └── SecurityConfig.java   # Configuración JWT y CORS
-│       │
-│       ├── security/
-│       │   ├── JwtUtil.java          # Generación y validación de tokens
-│       │   ├── JwtAuthFilter.java    # Filtro de autenticación por request
-│       │   └── UserDetailsServiceImpl.java
-│       │
-│       ├── entity/
-│       │   ├── Usuario.java
-│       │   ├── Rol.java
-│       │   ├── Paciente.java
-│       │   ├── Doctor.java
-│       │   ├── Especialidad.java
-│       │   └── CitaMedica.java
-│       │
-│       ├── repository/
-│       │   ├── UsuarioRepository.java
-│       │   ├── PacienteRepository.java
-│       │   ├── DoctorRepository.java
-│       │   ├── EspecialidadRepository.java
-│       │   └── CitaMedicaRepository.java
-│       │
-│       ├── dto/
-│       │   ├── AuthDTOs.java
-│       │   ├── PacienteDTO.java
-│       │   ├── DoctorDTO.java
-│       │   └── CitaMedicaDTO.java
-│       │
-│       └── controller/
-│           ├── AuthController.java        # POST /api/auth/login y /register
-│           ├── PacienteController.java    # CRUD /api/pacientes
-│           ├── DoctorController.java      # CRUD /api/doctores
-│           └── CitaMedicaController.java  # CRUD /api/citas
+│   ├── src/main/java/com/osler/
+│   │   ├── config/             # Seguridad JWT, CORS e Inicialización de datos
+│   │   ├── controller/         # Endpoints REST (Auth, Citas, Doctores, Pacientes, Historial)
+│   │   ├── dto/                # Objetos de transferencia de datos (Data Transfer Objects)
+│   │   ├── entity/             # Modelos de datos (JPA Entities)
+│   │   ├── repository/         # Capa de persistencia (Spring Data JPA)
+│   │   └── security/           # Filtros y utilidad JWT
+│   └── pom.xml                 # Configuración de dependencias Maven
 │
 └── frontend/
     ├── css/
-    │   ├── global.css      # Variables y estilos base
-    │   ├── login.css       # Estilos página de login
-    │   ├── dashboard.css   # Estilos dashboard y sidebar
-    │   └── crud.css        # Estilos tablas y modales
-    │
+    │   ├── global.css          # Design System y variables globales
+    │   ├── dashboard.css       # Layouts, Sidebar y componentes de navegación
+    │   └── crud.css            # Estilos de tablas y ventanas modales
     ├── js/
-    │   ├── auth.js         # Login, logout, token, apiFetch()
-    │   ├── pacientes.js    # Lógica CRUD pacientes
-    │   ├── doctores.js     # Lógica CRUD doctores
-    │   └── citas.js        # Lógica CRUD citas
-    │
+    │   └── auth.js             # Lógica central de autenticación y llamadas API
     └── pages/
-        ├── login.html      # Punto de entrada
-        ├── dashboard.html  # Inicio con estadísticas
-        ├── pacientes.html  # Gestión de pacientes
-        ├── doctores.html   # Gestión de doctores
-        └── citas.html      # Gestión de citas médicas
+        ├── login.html          # Punto de entrada al sistema
+        ├── dashboard-doctor.html    # Panel especializado para médicos
+        └── dashboard-paciente.html  # Panel especializado para pacientes
 ```
 
 # 🔀 Control de versiones

@@ -41,61 +41,147 @@ El sistema destaca por su **interfaz premium**, diseñada para ser intuitiva, r�
 
 ---
 
-# ⚙️ Funcionalidades Destacadas
+# 📊 Gestión del proyecto
 
-### 🔐 Autenticación y Seguridad
+El desarrollo del proyecto se gestiona mediante **Jira**, donde se organizan los hitos, tareas y avances de cada sprint.
 
-- **Sistema de Login JWT**: Autenticación persistente y segura.
-- **Control de Roles**: Dashboards personalizados según el rol (Admin, Doctor, Paciente).
-- **Seguridad en Perfil**: Cambio de contraseña requiriendo validación de contraseña actual.
+🔗 **Tablero del proyecto en Jira**
 
-### 👨‍⚕️ Dashboard del Doctor
-
-- **Calendario**: Visualización de turnos diarios y mensuales.
-- **Gestión de Historiales**: Creación de registros clínicos detallados (diagnóstico, tratamiento, observaciones).
-- **Control de Estado**: Marcar turnos como atendidos o cancelados.
-
-### 👤 Dashboard del Paciente
-
-- **Mis Citas**: Seguimiento en tiempo real de citas programadas y pasadas.
-- **Solicitud de Citas**: Interfaz fluida para agendar consultas con doctores por especialidad.
-- **Historial Clínico**: Acceso seguro a los registros médicos emitidos por sus doctores.
-
-### 📊 Gestión Administrativa
-
-- **CRUD Completo**: Administración de Doctores, Pacientes y Especialidades.
-- **Estadísticas en Tiempo Real**: Panel de control con métricas clave del sistema.
+https://entornos-osler.atlassian.net/jira/software/projects/OSLER/summary?atlOrigin=eyJpIjoiZTRhN2I4NWRlNjZjNDhiNjk3ODYxYjA4ZDZkZTZhYjYiLCJwIjoiaiJ9
 
 ---
 
-# 📁 Estructura del Repositorio (Resumen)
+# 🗄️ Modelo de base de datos
 
-```text
-Osler/
+La base de datos fue diseñada utilizando un **modelo relacional**, representado mediante un diagrama generado con herramientas de modelado como **drawSQL y ChartDB**.
+
+## Entidades principales del sistema
+
+- Usuarios
+- Rol
+- Pacientes
+- Doctores
+- Especialidades
+- Calendario
+- Citas médicas
+- Historial clínico
+- Tratamiento
+- Enfermedad
+- Alergia
+- Contacto de emergencia
+
+El diseño garantiza **integridad referencial mediante claves foráneas**, permitiendo una estructura escalable para futuras funcionalidades del sistema.
+
+---
+
+# ⚙️ Funcionalidades principales del sistema
+
+## 🔐 Autenticación
+
+- Inicio de sesión seguro
+- Validación de credenciales
+- Gestión de roles y permisos
+
+## 👤 Gestión de usuarios
+
+- Crear usuarios
+- Consultar usuarios
+- Actualizar información
+- Eliminar usuarios
+
+## 🏥 Gestión médica
+
+- Administración de pacientes
+- Registro de doctores
+- Programación de citas médicas
+- Gestión de calendarios médicos
+
+## 📑 Historial clínico
+
+- Registro de observaciones médicas
+- Registro de enfermedades
+- Registro de alergias
+- Registro de tratamientos
+
+## 📞 Información adicional
+
+- Contactos de emergencia para pacientes
+
+---
+
+# 📁 Estructura del repositorio
+
+```
+Osler-Entornos/
+│
+├── base-de-datos/
+│   └── osler-db.sql                  # Script completo de la BD
+│
 ├── backend/
-│   ├── src/main/java/com/osler/
-│   │   ├── config/             # Seguridad, CORS e Inicialización
-│   │   ├── controller/         # Endpoints REST (Auth, Citas, Doctores, Pacientes, Historial)
-│   │   ├── dto/                # Objetos de transferencia de datos optimizados
-│   │   ├── entity/             # Modelos de base de datos
-│   │   ├── repository/         # Interfaces de persistencia
-│   │   └── security/           # Lógica de JWT y filtros
-│   └── pom.xml                 # Gestión de dependencias Maven
+│   ├── pom.xml                       # Dependencias Maven
+│   └── src/main/java/com/osler/
+│       ├── OslerApplication.java     # Punto de entrada Spring Boot
+│       │
+│       ├── config/
+│       │   ├── DataInitializer.java  # Crea usuario admin al arrancar
+│       │   └── SecurityConfig.java   # Configuración JWT y CORS
+│       │
+│       ├── security/
+│       │   ├── JwtUtil.java          # Generación y validación de tokens
+│       │   ├── JwtAuthFilter.java    # Filtro de autenticación por request
+│       │   └── UserDetailsServiceImpl.java
+│       │
+│       ├── entity/
+│       │   ├── Usuario.java
+│       │   ├── Rol.java
+│       │   ├── Paciente.java
+│       │   ├── Doctor.java
+│       │   ├── Especialidad.java
+│       │   └── CitaMedica.java
+│       │
+│       ├── repository/
+│       │   ├── UsuarioRepository.java
+│       │   ├── PacienteRepository.java
+│       │   ├── DoctorRepository.java
+│       │   ├── EspecialidadRepository.java
+│       │   └── CitaMedicaRepository.java
+│       │
+│       ├── dto/
+│       │   ├── AuthDTOs.java
+│       │   ├── PacienteDTO.java
+│       │   ├── DoctorDTO.java
+│       │   └── CitaMedicaDTO.java
+│       │
+│       └── controller/
+│           ├── AuthController.java        # POST /api/auth/login y /register
+│           ├── PacienteController.java    # CRUD /api/pacientes
+│           ├── DoctorController.java      # CRUD /api/doctores
+│           └── CitaMedicaController.java  # CRUD /api/citas
 │
 └── frontend/
     ├── css/
-    │   ├── global.css          # Design System y Variables
-    │   ├── dashboard.css       # Layouts, Sidebar y Topbar
-    │   └── crud.css            # Estilos de tablas y ventanas modales
+    │   ├── global.css      # Variables y estilos base
+    │   ├── login.css       # Estilos página de login
+    │   ├── dashboard.css   # Estilos dashboard y sidebar
+    │   └── crud.css        # Estilos tablas y modales
+    │
     ├── js/
-    │   └── auth.js             # Lógica central de API y Seguridad
+    │   ├── auth.js         # Login, logout, token, apiFetch()
+    │   ├── pacientes.js    # Lógica CRUD pacientes
+    │   ├── doctores.js     # Lógica CRUD doctores
+    │   └── citas.js        # Lógica CRUD citas
+    │
     └── pages/
-        ├── login.html          # Portal de acceso
-        ├── dashboard-doctor.html    # Panel médico especializado
-        └── dashboard-paciente.html  # Panel de usuario especializado
+        ├── login.html      # Punto de entrada
+        ├── dashboard.html  # Inicio con estadísticas
+        ├── pacientes.html  # Gestión de pacientes
+        ├── doctores.html   # Gestión de doctores
+        └── citas.html      # Gestión de citas médicas
 ```
 
----
+# 🔀 Control de versiones
+
+El proyecto utiliza **Git** para el control de versiones.
 
 # 📄 Licencia
 

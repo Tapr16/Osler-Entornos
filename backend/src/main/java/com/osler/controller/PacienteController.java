@@ -60,6 +60,14 @@ public class PacienteController {
         return ResponseEntity.ok(resultados);
     }
 
+    // -------- GET /api/pacientes/email/{email} --------
+    @GetMapping("/email/{email:.+}")
+    public ResponseEntity<?> obtenerPorEmail(@PathVariable String email) {
+        return pacienteRepo.findByEmail(email)
+                .map(p -> ResponseEntity.ok(PacienteDTO.toResponse(p)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // -------- POST /api/pacientes --------
     @PostMapping
     public ResponseEntity<?> crear(@Valid @RequestBody PacienteDTO.Request req) {
@@ -119,5 +127,7 @@ public class PacienteController {
         p.setDireccion(req.direccion());
         p.setCiudad(req.ciudad());
         p.setTipoSangre(req.tipoSangre());
+        p.setContactoEmergenciaNombre(req.contactoEmergenciaNombre());
+        p.setContactoEmergenciaTelefono(req.contactoEmergenciaTelefono());
     }
 }

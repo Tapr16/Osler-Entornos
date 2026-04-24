@@ -273,6 +273,47 @@ function showModalAlert(msg, type) {
     el.className = 'alert ' + type;
 }
 
+// ================================================================
+// MODAL ESPECIALIDAD
+// ================================================================
+function abrirModalEspecialidad() {
+    document.getElementById('fNombreEsp').value = '';
+    document.getElementById('modalAlertEsp').className = 'alert hidden';
+    document.getElementById('modalOverlayEsp').classList.add('active');
+}
+
+function cerrarModalEsp() {
+    document.getElementById('modalOverlayEsp').classList.remove('active');
+}
+
+function cerrarModalEspSiClick(e) {
+    if (e.target === document.getElementById('modalOverlayEsp')) cerrarModalEsp();
+}
+
+async function guardarEspecialidad() {
+    const nombre = document.getElementById('fNombreEsp').value.trim();
+    if (!nombre) return;
+
+    try {
+        const res = await apiFetch('/api/especialidades', {
+            method: 'POST',
+            body: JSON.stringify({ nombre })
+        });
+        if (res.ok) {
+            cerrarModalEsp();
+            showGlobalAlert('Especialidad creada ✨', 'success');
+            cargarEspecialidades(); // Recargar el select del modal de doctores
+        } else {
+            const err = await res.text();
+            const el = document.getElementById('modalAlertEsp');
+            el.textContent = err;
+            el.className = 'alert error';
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 // Cargar al iniciar
 cargarEspecialidades();
 cargarDoctores();

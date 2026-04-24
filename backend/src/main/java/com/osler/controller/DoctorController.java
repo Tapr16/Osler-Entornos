@@ -62,10 +62,27 @@ public class DoctorController {
         return ResponseEntity.ok(resultados);
     }
 
+    // -------- GET /api/doctores/email/{email} --------
+    @GetMapping("/api/doctores/email/{email:.+}")
+    public ResponseEntity<?> obtenerPorEmail(@PathVariable String email) {
+        return doctorRepo.findByEmail(email)
+                .map(d -> ResponseEntity.ok(DoctorDTO.toResponse(d)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // -------- GET /api/especialidades --------
     @GetMapping("/api/especialidades")
     public ResponseEntity<?> listarEspecialidades() {
         return ResponseEntity.ok(especialidadRepo.findAllByOrderByNombreAsc());
+    }
+
+    // -------- POST /api/especialidades --------
+    @PostMapping("/api/especialidades")
+    public ResponseEntity<?> crearEspecialidad(@RequestBody Especialidad esp) {
+        if (especialidadRepo.findByNombre(esp.getNombre()).isPresent()) {
+            return ResponseEntity.badRequest().body("La especialidad ya existe");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(especialidadRepo.save(esp));
     }
 
     // -------- POST /api/doctores --------

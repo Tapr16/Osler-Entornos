@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osler - Mi Panel de Paciente</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/crud.css">
+    <!-- FullCalendar CDN -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">🩺</span>
+            <h2 class="sidebar-title">Osler</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">Mis Citas</span>
+            </a>
+            <a href="#" class="nav-item" onclick="abrirModalPerfil()">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Mi Perfil</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info" onclick="abrirModalPerfil()" style="cursor: pointer;">
+                <strong id="pacienteSidebarName">Paciente</strong><br>
+                <span id="pacienteSidebarEmail">email@paciente.com</span>
+            </div>
+            <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title" id="welcomeText">Hola, Paciente</h1>
+            <div class="avatar" id="avatarText" onclick="abrirModalPerfil()" style="cursor: pointer; background: var(--color-primary); color: #fff; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem;">PA</div>
+        </header>
+
+        <section class="content-area">
+            <div class="welcome-banner" style="margin-bottom: 2rem;">
+                <div>
+                    <h2 id="bannerWelcome">¡Bienvenido de nuevo!</h2>
+                    <p>Aquí puedes gestionar tus citas médicas y consultar tu historial.</p>
+                </div>
+                <div class="welcome-icon">🏥</div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>Gestión de Citas</h3>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn-secondary" onclick="switchView('list')">Lista</button>
+                    <button class="btn-secondary" onclick="switchView('calendar')">Calendario</button>
+                    <button class="btn-primary" onclick="abrirModalCita()">+ Solicitar Cita</button>
+                </div>
+            </div>
+
+            <div id="listView" class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha y Hora</th>
+                            <th>Doctor</th>
+                            <th>Especialidad</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="citasTableBody">
+                        <tr><td colspan="5" style="text-align: center;">Cargando tus citas...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="calendarView" class="hidden">
+                <div id="calendar"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Perfil / Datos Personales -->
+    <div id="modalPerfil" class="modal hidden">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>Mi Perfil / Datos Personales</h2>
+                <button class="btn-close" onclick="closeModal('modalPerfil')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="perfilForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Nombre</label>
+                            <input type="text" id="profNombre" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Apellido</label>
+                            <input type="text" id="profApellido" required>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Teléfono</label>
+                            <input type="text" id="profTel">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Ciudad</label>
+                            <input type="text" id="profCiudad">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dirección de Residencia</label>
+                        <input type="text" id="profDireccion">
+                    </div>
+
+                    <p style="font-weight: 700; font-size: 0.9rem; margin: 1.5rem 0 1rem; color: var(--color-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Contacto de Emergencia</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Nombre Contacto</label>
+                            <input type="text" id="profEmergenciaNom">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Teléfono Contacto</label>
+                            <input type="text" id="profEmergenciaTel">
+                        </div>
+                    </div>
+
+                    <p style="font-weight: 700; font-size: 0.9rem; margin: 1.5rem 0 1rem; color: var(--color-danger); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Seguridad y Acceso</p>
+                    <div class="form-group">
+                        <label>Contraseña Actual (Para cambios)</label>
+                        <input type="password" id="oldPass" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label>Nueva Contraseña (Opcional)</label>
+                        <input type="password" id="newPass" placeholder="Min. 6 caracteres">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('modalPerfil')">Cancelar</button>
+                        <button type="submit" class="btn-primary" id="btnUpdatePass">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Solicitar Cita -->
+    <div id="modalCita" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Agendar Nueva Cita</h2>
+                <button class="btn-close" onclick="closeModal('modalCita')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="citaForm">
+                    <div class="form-group">
+                        <label>Doctor / Especialidad</label>
+                        <select id="selDoctor" required>
+                            <!-- Se carga vía JS -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha y Hora</label>
+                        <input type="datetime-local" id="fechaHora" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Motivo de la consulta</label>
+                        <textarea id="motivo" rows="3" placeholder="Ej: Control general, dolor de cabeza..." required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('modalCita')">Cancelar</button>
+                        <button type="submit" class="btn-primary" id="btnGuardarCita">Confirmar Cita</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        requireAuth();
+        const user = getUser();
+        if (user && user.rol !== 'PACIENTE') {
+            window.location.href = 'dashboard.html';
+        }
+
+        // UI Initial State
+        document.getElementById('welcomeText').textContent = `Hola, ${user.nombre}`;
+        document.getElementById('pacienteSidebarName').textContent = `${user.nombre} ${user.apellido}`;
+        document.getElementById('pacienteSidebarEmail').textContent = user.email;
+        document.getElementById('avatarText').textContent = user.nombre.charAt(0) + user.apellido.charAt(0);
+
+        let currentPacienteId = null;
+        let currentPacienteData = null;
+        let calendar = null;
+
+        async function init() {
+            try {
+                const res = await apiFetch(`/api/pacientes/email/${encodeURIComponent(user.email)}`);
+                if (res.ok) {
+                    currentPacienteData = await res.json();
+                    currentPacienteId = currentPacienteData.id;
+                    initCalendar();
+                    calendar.render(); 
+                    await loadCitas();
+                } else {
+                    alert("Error al cargar perfil de paciente");
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function switchView(view) {
+            if (view === 'list') {
+                document.getElementById('listView').classList.remove('hidden');
+                document.getElementById('calendarView').classList.add('hidden');
+            } else {
+                document.getElementById('listView').classList.add('hidden');
+                document.getElementById('calendarView').classList.remove('hidden');
+                if (calendar) calendar.render();
+            }
+        }
+
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek'
+                },
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana'
+                }
+            });
+        }
+
+        async function loadCitas() {
+            try {
+                const res = await apiFetch(`/api/citas/mis-citas?email=${encodeURIComponent(user.email)}`);
+                if (res && res.ok) {
+                    const citas = await res.json();
+                    console.log("Citas recibidas:", citas); // Debug
+                    const tbody = document.getElementById('citasTableBody');
+                    
+                    if (citas.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No tienes citas programadas.</td></tr>';
+                    } else {
+                        tbody.innerHTML = citas.map(c => `
+                            <tr>
+                                <td>${new Date(c.fechaHora).toLocaleString()}</td>
+                                <td>${c.doctorNombre}</td>
+                                <td>${c.especialidadNombre || 'General'}</td>
+                                <td>${c.motivo}</td>
+                                <td><span class="badge ${c.estado.toLowerCase()}">${c.estado}</span></td>
+                            </tr>
+                        `).join('');
+                    }
+
+                    if (calendar) {
+                        calendar.removeAllEvents();
+                        citas.forEach(c => {
+                            calendar.addEvent({
+                                title: `${c.doctorNombre} - ${c.motivo}`,
+                                start: c.fechaHora,
+                                end: new Date(new Date(c.fechaHora).getTime() + (c.duracionMin * 60000)),
+                                backgroundColor: c.estado === 'CANCELADA' ? '#e53e3e' : '#3182ce'
+                            });
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Error al cargar citas", error);
+                document.getElementById('citasTableBody').innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error al cargar las citas</td></tr>';
+            }
+        }
+
+        async function abrirModalCita() {
+            openModal('modalCita');
+            const sel = document.getElementById('selDoctor');
+            sel.innerHTML = '<option value="">Cargando...</option>';
+            
+            try {
+                const res = await apiFetch('/api/doctores');
+                if (res.ok) {
+                    const doctores = await res.json();
+                    sel.innerHTML = '<option value="">-- Seleccione un Doctor --</option>' + 
+                        doctores.map(d => `<option value="${d.id}">${d.nombre} ${d.apellido} (${d.especialidadNombre})</option>`).join('');
+                }
+            } catch (err) {
+                console.error(err);
+                sel.innerHTML = '<option value="">Error al cargar doctores</option>';
+            }
+        }
+
+        document.getElementById('citaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnGuardarCita');
+            btn.disabled = true;
+
+            const payload = {
+                pacienteId: currentPacienteId,
+                doctorId: document.getElementById('selDoctor').value,
+                fechaHora: document.getElementById('fechaHora').value,
+                motivo: document.getElementById('motivo').value,
+                duracionMin: 30,
+                estado: 'PROGRAMADA'
+            };
+
+            try {
+                const res = await apiFetch('/api/citas', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    alert('Cita solicitada con éxito');
+                    closeModal('modalCita');
+                    loadCitas();
+                    e.target.reset();
+                } else {
+                    const data = await res.json();
+                    alert('Error: ' + (data.mensaje || 'No se pudo agendar la cita'));
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function abrirModalPerfil() {
+            if (!currentPacienteData) {
+                alert("Cargando datos...");
+                return;
+            }
+            document.getElementById('profNombre').value = currentPacienteData.nombre || '';
+            document.getElementById('profApellido').value = currentPacienteData.apellido || '';
+            document.getElementById('profTel').value = currentPacienteData.telefono || '';
+            document.getElementById('profCiudad').value = currentPacienteData.ciudad || '';
+            document.getElementById('profDireccion').value = currentPacienteData.direccion || '';
+            document.getElementById('profEmergenciaNom').value = currentPacienteData.contactoEmergenciaNombre || '';
+            document.getElementById('profEmergenciaTel').value = currentPacienteData.contactoEmergenciaTelefono || '';
+            
+            document.getElementById('oldPass').value = '';
+            document.getElementById('newPass').value = '';
+            openModal('modalPerfil');
+        }
+
+        document.getElementById('perfilForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnUpdatePass');
+            const payload = {
+                nombre: document.getElementById('profNombre').value,
+                apellido: document.getElementById('profApellido').value,
+                telefono: document.getElementById('profTel').value,
+                ciudad: document.getElementById('profCiudad').value,
+                direccion: document.getElementById('profDireccion').value,
+                contactoEmergenciaNombre: document.getElementById('profEmergenciaNom').value,
+                contactoEmergenciaTelefono: document.getElementById('profEmergenciaTel').value
+            };
+            const oldPassword = document.getElementById('oldPass').value;
+            const newPassword = document.getElementById('newPass').value;
+
+            btn.disabled = true;
+            btn.textContent = 'Guardando...';
+
+            try {
+                const resProfile = await apiFetch('/api/auth/update-profile', {
+                    method: 'PUT',
+                    body: JSON.stringify(payload)
+                });
+                if (!resProfile.ok) throw new Error('Error al actualizar datos personales');
+
+                if (newPassword) {
+                    if (!oldPassword) throw new Error('Debes ingresar tu contraseña actual para cambiarla');
+                    const resPass = await apiFetch('/api/auth/change-password', {
+                        method: 'POST',
+                        body: JSON.stringify({ oldPassword, newPassword })
+                    });
+                    if (!resPass.ok) {
+                        const data = await resPass.json();
+                        throw new Error(data.mensaje || 'Error al cambiar contraseña');
+                    }
+                }
+
+                alert('Perfil actualizado correctamente');
+                Object.assign(currentPacienteData, payload);
+                document.getElementById('welcomeText').textContent = `Hola, ${payload.nombre}`;
+                document.getElementById('pacienteSidebarName').textContent = `${payload.nombre} ${payload.apellido}`;
+                closeModal('modalPerfil');
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Guardar Cambios';
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>

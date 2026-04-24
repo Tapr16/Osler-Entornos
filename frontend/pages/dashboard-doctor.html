@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osler - Panel de Doctor</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/crud.css">
+    <!-- FullCalendar CDN -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .historial-modal {
+            max-width: 800px;
+        }
+        .historial-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        .historial-item:last-child {
+            border-bottom: none;
+        }
+        .historial-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+        .badge.en_curso { background: #ebf8ff; color: #3182ce; }
+        .badge.completada { background: #f0fff4; color: #38a169; }
+        
+        #calendar {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            margin-top: 1.5rem;
+        }
+        .fc-header-toolbar {
+            margin-bottom: 1.5rem !important;
+        }
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo-icon">🩺</span>
+            <h2 class="sidebar-title">Osler</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">Mis Turnos</span>
+            </a>
+            <a href="#" class="nav-item" onclick="abrirModalPerfil()">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Mi Perfil</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info" onclick="abrirModalPerfil()" style="cursor: pointer;">
+                <strong id="doctorName">Doctor</strong><br>
+                <span id="doctorEmail">email@osler.com</span>
+            </div>
+            <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title">Agenda Médica</h1>
+        </header>
+
+        <section class="content-area">
+            <div class="welcome-banner">
+                <div>
+                    <h2 id="welcomeText">Bienvenido, Dr.</h2>
+                    <p>Gestiona tus citas y evoluciones médicas.</p>
+                </div>
+                <div class="welcome-icon">👨‍⚕️</div>
+            </div>
+
+            <div class="view-toggle">
+                <button class="btn-primary" onclick="switchView('list')">Ver Lista</button>
+                <button class="btn-secondary" onclick="switchView('calendar')">Ver Calendario</button>
+            </div>
+
+            <div id="listView" class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Hora</th>
+                            <th>Paciente</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="turnosTableBody">
+                        <tr><td colspan="5" style="text-align: center;">Cargando turnos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="calendarView" class="hidden">
+                <div id="calendar"></div>
+            </div>
+        </section>
+    </main>
+
+
+
+
+
+    <!-- Modal Historial Clínico -->
+    <div id="modalHistorial" class="modal hidden">
+        <div class="modal-content historial-modal">
+            <div class="modal-header">
+                <h2 id="historialTitle">Historial de Paciente</h2>
+                <button class="btn-close" onclick="closeModal('modalHistorial')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="historialLista" style="max-height: 300px; overflow-y: auto; margin-bottom: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                    <!-- Aquí se cargarán los registros previos -->
+                </div>
+                
+                <form id="historialForm">
+                    <input type="hidden" id="historialPacienteId">
+                    <input type="hidden" id="historialCitaId">
+                    <input type="hidden" id="historialDoctorId">
+                    
+                    <div class="form-group">
+                        <label>Diagnóstico</label>
+                        <textarea id="diag" rows="3" placeholder="Escriba el diagnóstico..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Tratamiento</label>
+                        <textarea id="trat" rows="2" placeholder="Prescripción y recomendaciones..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Observaciones</label>
+                        <textarea id="obser" rows="2" placeholder="Notas adicionales..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('modalHistorial')">Cancelar</button>
+                        <button type="submit" class="btn-primary">Guardar Evolución</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Perfil / Datos Personales -->
+    <div id="modalPerfil" class="modal hidden">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2>Mi Perfil Profesional</h2>
+                <button class="btn-close" onclick="closeModal('modalPerfil')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="perfilForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Nombre</label>
+                            <input type="text" id="profNombre" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Apellido</label>
+                            <input type="text" id="profApellido" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono de Contacto</label>
+                        <input type="text" id="profTel" placeholder="Ej: +57 300 000 0000">
+                    </div>
+                    
+                    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
+                    <p style="font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem; color: var(--color-primary);">Seguridad y Acceso</p>
+                    
+                    <div class="form-group">
+                        <label>Contraseña Actual (Para cambios)</label>
+                        <input type="password" id="oldPass" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label>Nueva Contraseña (Opcional)</label>
+                        <input type="password" id="newPass" placeholder="Min. 6 caracteres">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal('modalPerfil')">Cancelar</button>
+                        <button type="submit" class="btn-primary" id="btnUpdatePass">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        requireAuth();
+        const user = getUser();
+        if (user && user.rol !== 'DOCTOR') {
+            window.location.href = 'dashboard.html';
+        }
+
+        document.getElementById('doctorName').textContent = `Dr. ${user.nombre} ${user.apellido}`;
+        document.getElementById('doctorEmail').textContent = user.email;
+        document.getElementById('welcomeText').textContent = `Bienvenido, Dr. ${user.nombre}`;
+
+        let currentDoctorId = null;
+        let currentDoctorData = null;
+        let calendar = null;
+
+        async function init() {
+            try {
+                const res = await apiFetch(`/api/doctores/email/${encodeURIComponent(user.email)}`);
+                if (res.ok) {
+                    currentDoctorData = await res.json();
+                    currentDoctorId = currentDoctorData.id;
+                    initCalendar();
+                    calendar.render(); 
+                    await loadTurnos();
+                } else {
+                    alert("Error al cargar perfil de doctor");
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function switchView(view) {
+            if (view === 'list') {
+                document.getElementById('listView').classList.remove('hidden');
+                document.getElementById('calendarView').classList.add('hidden');
+            } else {
+                document.getElementById('listView').classList.add('hidden');
+                document.getElementById('calendarView').classList.remove('hidden');
+                if (calendar) calendar.render();
+            }
+        }
+
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                slotMinTime: '06:00:00',
+                slotMaxTime: '21:00:00',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                buttonText: {
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día'
+                },
+                eventClick: function(info) {
+                    const cita = info.event.extendedProps;
+                    abrirHistorial(cita.pacienteId, info.event.id, cita.pacienteNombre);
+                }
+            });
+        }
+
+        async function loadTurnos() {
+            try {
+                const res = await apiFetch(`/api/citas/mis-turnos?email=${encodeURIComponent(user.email)}`);
+                if (res && res.ok) {
+                    const citas = await res.json();
+                    const tbody = document.getElementById('turnosTableBody');
+                    
+                    if (citas.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No tienes turnos programados.</td></tr>';
+                    } else {
+                        tbody.innerHTML = citas.map(c => `
+                            <tr>
+                                <td>${new Date(c.fechaHora).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                                <td>${c.pacienteNombre}</td>
+                                <td>${c.motivo}</td>
+                                <td><span class="badge ${c.estado.toLowerCase()}">${c.estado}</span></td>
+                                <td>
+                                    <button class="btn-action btn-edit" onclick="abrirHistorial(${c.pacienteId}, ${c.id}, '${c.pacienteNombre}')">
+                                        ⚕️ Historial
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    }
+
+                    if (calendar) {
+                        calendar.removeAllEvents();
+                        citas.forEach(c => {
+                            calendar.addEvent({
+                                id: c.id,
+                                title: `${c.pacienteNombre} - ${c.motivo}`,
+                                start: c.fechaHora,
+                                end: new Date(new Date(c.fechaHora).getTime() + (c.duracionMin * 60000)),
+                                backgroundColor: c.estado === 'COMPLETADA' ? '#38a169' : '#3182ce',
+                                extendedProps: {
+                                    pacienteId: c.pacienteId,
+                                    pacienteNombre: c.pacienteNombre
+                                }
+                            });
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Error al cargar turnos", error);
+            }
+        }
+
+        async function abrirHistorial(pacienteId, citaId, nombrePaciente) {
+            document.getElementById('historialTitle').textContent = `Evolución Médica: ${nombrePaciente}`;
+            document.getElementById('historialPacienteId').value = pacienteId;
+            document.getElementById('historialCitaId').value = citaId;
+            document.getElementById('historialDoctorId').value = currentDoctorId;
+            
+            document.getElementById('diag').value = '';
+            document.getElementById('trat').value = '';
+            document.getElementById('obser').value = '';
+
+            const lista = document.getElementById('historialLista');
+            lista.innerHTML = 'Cargando historial previo...';
+            
+            try {
+                const res = await apiFetch(`/api/historial-clinico/paciente/${pacienteId}`);
+                if (res.ok) {
+                    const registros = await res.json();
+                    if (registros.length === 0) {
+                        lista.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Sin registros previos.</p>';
+                    } else {
+                        lista.innerHTML = registros.map(r => `
+                            <div class="historial-item">
+                                <div class="historial-meta">${new Date(r.fecha).toLocaleString()} - Dr. ${r.doctorNombreCompleto}</div>
+                                <div><strong>Diagnóstico:</strong> ${r.diagnostico}</div>
+                                <div><strong>Tratamiento:</strong> ${r.tratamiento}</div>
+                                ${r.observaciones ? `<div><strong>Obs:</strong> ${r.observaciones}</div>` : ''}
+                            </div>
+                        `).join('');
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                lista.innerHTML = 'Error al cargar historial.';
+            }
+
+            openModal('modalHistorial');
+        }
+
+        document.getElementById('historialForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                pacienteId: document.getElementById('historialPacienteId').value,
+                citaId: document.getElementById('historialCitaId').value,
+                doctorId: document.getElementById('historialDoctorId').value,
+                diagnostico: document.getElementById('diag').value,
+                tratamiento: document.getElementById('trat').value,
+                observaciones: document.getElementById('obser').value
+            };
+
+            try {
+                const res = await apiFetch('/api/historial-clinico', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    alert('Historial actualizado correctamente');
+                    closeModal('modalHistorial');
+                } else {
+                    const data = await res.json();
+                    alert('Error: ' + (data.mensaje || 'No se pudo guardar'));
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function abrirModalPerfil() {
+            if (!currentDoctorData) {
+                alert("Los datos del perfil aún se están cargando...");
+                return;
+            }
+            document.getElementById('profNombre').value = currentDoctorData.nombre || '';
+            document.getElementById('profApellido').value = currentDoctorData.apellido || '';
+            document.getElementById('profTel').value = currentDoctorData.telefono || '';
+            document.getElementById('oldPass').value = '';
+            document.getElementById('newPass').value = '';
+            openModal('modalPerfil');
+        }
+
+        document.getElementById('perfilForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnUpdatePass');
+            const nombre = document.getElementById('profNombre').value;
+            const apellido = document.getElementById('profApellido').value;
+            const telefono = document.getElementById('profTel').value;
+            const oldPassword = document.getElementById('oldPass').value;
+            const newPassword = document.getElementById('newPass').value;
+
+            btn.disabled = true;
+            btn.textContent = 'Guardando...';
+
+            try {
+                const resProfile = await apiFetch('/api/auth/update-profile', {
+                    method: 'PUT',
+                    body: JSON.stringify({ nombre, apellido, telefono })
+                });
+
+                if (!resProfile.ok) throw new Error('Error al actualizar datos personales');
+
+                if (newPassword) {
+                    if (!oldPassword) throw new Error('Debes ingresar tu contraseña actual para cambiarla');
+                    const resPass = await apiFetch('/api/auth/change-password', {
+                        method: 'POST',
+                        body: JSON.stringify({ oldPassword, newPassword })
+                    });
+                    if (!resPass.ok) {
+                        const data = await resPass.json();
+                        throw new Error(data.mensaje || 'Error al cambiar contraseña');
+                    }
+                }
+
+                alert('Perfil actualizado correctamente');
+                currentDoctorData.nombre = nombre;
+                currentDoctorData.apellido = apellido;
+                currentDoctorData.telefono = telefono;
+                document.getElementById('doctorName').textContent = `Dr. ${nombre} ${apellido}`;
+                document.getElementById('welcomeText').textContent = `Bienvenido, Dr. ${nombre}`;
+                closeModal('modalPerfil');
+            } catch (err) {
+                alert(err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Guardar Cambios';
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>

@@ -2,41 +2,39 @@
 
 ## 📌 Descripción del proyecto
 
-**Osler** es una plataforma web orientada a la **gestión integral de información médica y administrativa dentro de un entorno clínico**.  
-El sistema permite administrar usuarios, pacientes, doctores, citas médicas e historiales clínicos, facilitando la organización y el seguimiento de la atención médica.
+**Osler** es una plataforma web moderna orientada a la **gestión integral de información médica y administrativa**. El sistema ofrece una experiencia diferenciada para administradores, doctores y pacientes, permitiendo centralizar la programación de citas, el seguimiento de historiales clínicos y la gestión de perfiles profesionales.
 
-El objetivo del proyecto es desarrollar una herramienta que permita:
-
-- Mejorar la organización de la información médica
-- Optimizar procesos administrativos
-- Facilitar el acceso a datos clínicos
-- Mantener un sistema seguro y estructurado para la gestión médica
+El sistema destaca por su **interfaz premium**, diseñada para ser intuitiva, rápida y visualmente atractiva, facilitando el trabajo diario en clínicas y consultorios.
 
 ---
 
-# 👥 Integrantes del proyecto
+# 👥 Equipo de Desarrollo
 
+- **Thomas Perez**
 - **Jesus Santodomingo**
 - **Esteban Suarez**
-- **Thomas Perez**
 
 ---
 
 # 🧰 Tecnologías utilizadas
 
 ## Frontend
+
 - HTML
 - CSS
 - JavaScript
 
 ## Backend
+
 - Spring Boot (Java)
 - Spring Security
 
 ## Base de datos
+
 - MySQL
 
 ## Herramientas de desarrollo
+
 - Git (control de versiones)
 - Jira (gestión del proyecto)
 - drawSQL / ChartDB (modelado de base de datos)
@@ -67,121 +65,58 @@ La base de datos fue diseñada utilizando un **modelo relacional**, representado
 - Calendario
 - Citas médicas
 - Historial clínico
-- Tratamiento
-- Enfermedad
-- Alergia
-- Contacto de emergencia
-
-El diseño garantiza **integridad referencial mediante claves foráneas**, permitiendo una estructura escalable para futuras funcionalidades del sistema.
 
 ---
 
-# ⚙️ Funcionalidades principales del sistema
+# 🚀 Funcionalidades Principales
 
-## 🔐 Autenticación
-- Inicio de sesión seguro
-- Validación de credenciales
-- Gestión de roles y permisos
+### 🔐 Seguridad y Acceso
+- **Autenticación JWT**: Inicio de sesión seguro con roles diferenciados.
+- **Gestión de Perfil**: Actualización de datos personales y cambio de contraseña con validación de seguridad.
 
-## 👤 Gestión de usuarios
-- Crear usuarios
-- Consultar usuarios
-- Actualizar información
-- Eliminar usuarios
+### 👨‍⚕️ Dashboard del Doctor (Especializado)
+- **Agenda Médica**: Visualización de turnos mediante calendario interactivo.
+- **Historial Clínico**: Registro detallado de consultas, diagnósticos y tratamientos.
+- **Control de Turnos**: Gestión de estados (Programada, Atendida, Cancelada).
 
-## 🏥 Gestión médica
-- Administración de pacientes
-- Registro de doctores
-- Programación de citas médicas
-- Gestión de calendarios médicos
-
-## 📑 Historial clínico
-- Registro de observaciones médicas
-- Registro de enfermedades
-- Registro de alergias
-- Registro de tratamientos
-
-## 📞 Información adicional
-- Contactos de emergencia para pacientes
+### 👤 Dashboard del Paciente (Especializado)
+- **Mis Citas**: Seguimiento de citas pendientes y consultas pasadas.
+- **Agendamiento**: Interfaz intuitiva para solicitar nuevas citas con especialistas.
+- **Consulta de Historial**: Acceso a los registros médicos emitidos por los profesionales.
 
 ---
 
-# 📁 Estructura del repositorio
+# 📁 Estructura del Repositorio
 
-```
-Osler-Entornos/
-│
-├── base-de-datos/
-│   └── osler-db.sql                  # Script completo de la BD
-│
+```text
+Osler/
 ├── backend/
-│   ├── pom.xml                       # Dependencias Maven
-│   └── src/main/java/com/osler/
-│       ├── OslerApplication.java     # Punto de entrada Spring Boot
-│       │
-│       ├── config/
-│       │   ├── DataInitializer.java  # Crea usuario admin al arrancar
-│       │   └── SecurityConfig.java   # Configuración JWT y CORS
-│       │
-│       ├── security/
-│       │   ├── JwtUtil.java          # Generación y validación de tokens
-│       │   ├── JwtAuthFilter.java    # Filtro de autenticación por request
-│       │   └── UserDetailsServiceImpl.java
-│       │
-│       ├── entity/
-│       │   ├── Usuario.java
-│       │   ├── Rol.java
-│       │   ├── Paciente.java
-│       │   ├── Doctor.java
-│       │   ├── Especialidad.java
-│       │   └── CitaMedica.java
-│       │
-│       ├── repository/
-│       │   ├── UsuarioRepository.java
-│       │   ├── PacienteRepository.java
-│       │   ├── DoctorRepository.java
-│       │   ├── EspecialidadRepository.java
-│       │   └── CitaMedicaRepository.java
-│       │
-│       ├── dto/
-│       │   ├── AuthDTOs.java
-│       │   ├── PacienteDTO.java
-│       │   ├── DoctorDTO.java
-│       │   └── CitaMedicaDTO.java
-│       │
-│       └── controller/
-│           ├── AuthController.java        # POST /api/auth/login y /register
-│           ├── PacienteController.java    # CRUD /api/pacientes
-│           ├── DoctorController.java      # CRUD /api/doctores
-│           └── CitaMedicaController.java  # CRUD /api/citas
+│   ├── src/main/java/com/osler/
+│   │   ├── config/             # Seguridad JWT, CORS e Inicialización de datos
+│   │   ├── controller/         # Endpoints REST (Auth, Citas, Doctores, Pacientes, Historial)
+│   │   ├── dto/                # Objetos de transferencia de datos (Data Transfer Objects)
+│   │   ├── entity/             # Modelos de datos (JPA Entities)
+│   │   ├── repository/         # Capa de persistencia (Spring Data JPA)
+│   │   └── security/           # Filtros y utilidad JWT
+│   └── pom.xml                 # Configuración de dependencias Maven
 │
 └── frontend/
     ├── css/
-    │   ├── global.css      # Variables y estilos base
-    │   ├── login.css       # Estilos página de login
-    │   ├── dashboard.css   # Estilos dashboard y sidebar
-    │   └── crud.css        # Estilos tablas y modales
-    │
+    │   ├── global.css          # Design System y variables globales
+    │   ├── dashboard.css       # Layouts, Sidebar y componentes de navegación
+    │   └── crud.css            # Estilos de tablas y ventanas modales
     ├── js/
-    │   ├── auth.js         # Login, logout, token, apiFetch()
-    │   ├── pacientes.js    # Lógica CRUD pacientes
-    │   ├── doctores.js     # Lógica CRUD doctores
-    │   └── citas.js        # Lógica CRUD citas
-    │
+    │   └── auth.js             # Lógica central de autenticación y llamadas API
     └── pages/
-        ├── login.html      # Punto de entrada
-        ├── dashboard.html  # Inicio con estadísticas
-        ├── pacientes.html  # Gestión de pacientes
-        ├── doctores.html   # Gestión de doctores
-        └── citas.html      # Gestión de citas médicas
+        ├── login.html          # Punto de entrada al sistema
+        ├── dashboard-doctor.html    # Panel especializado para médicos
+        └── dashboard-paciente.html  # Panel especializado para pacientes
 ```
-
 
 # 🔀 Control de versiones
 
 El proyecto utiliza **Git** para el control de versiones.
 
-
 # 📄 Licencia
 
-Proyecto desarrollado con **fines académicos**.
+Proyecto desarrollado con **fines académicos**. Osler 2026.

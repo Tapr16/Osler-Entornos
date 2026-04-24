@@ -19,7 +19,8 @@ CREATE TABLE roles (
 INSERT INTO roles (nombre, descripcion) VALUES
     ('ADMIN',         'Administrador del sistema'),
     ('DOCTOR',        'Médico registrado en el sistema'),
-    ('RECEPCIONISTA', 'Personal administrativo');
+    ('RECEPCIONISTA', 'Personal administrativo'),
+    ('PACIENTE',      'Paciente registrado en el sistema');
 
 -- ============================================================
 -- TABLA: usuarios

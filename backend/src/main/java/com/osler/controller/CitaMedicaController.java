@@ -65,6 +65,26 @@ public class CitaMedicaController {
         return ResponseEntity.ok(resultados);
     }
 
+    // -------- GET /api/citas/mis-citas (Para Paciente) --------
+    @GetMapping("/mis-citas")
+    public ResponseEntity<List<CitaMedicaDTO.Response>> misCitas(@RequestParam String email) {
+        List<CitaMedicaDTO.Response> resultados = citaRepo.findByPacienteEmailOrderByFechaHoraDesc(email)
+                .stream()
+                .map(CitaMedicaDTO::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(resultados);
+    }
+
+    // -------- GET /api/citas/mis-turnos (Para Doctor) --------
+    @GetMapping("/mis-turnos")
+    public ResponseEntity<List<CitaMedicaDTO.Response>> misTurnos(@RequestParam String email) {
+        List<CitaMedicaDTO.Response> resultados = citaRepo.findByDoctorEmailOrderByFechaHoraDesc(email)
+                .stream()
+                .map(CitaMedicaDTO::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(resultados);
+    }
+
     // -------- POST /api/citas --------
     @PostMapping
     public ResponseEntity<?> crear(@Valid @RequestBody CitaMedicaDTO.Request req) {

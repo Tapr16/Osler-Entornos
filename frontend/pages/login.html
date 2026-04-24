@@ -54,10 +54,14 @@
                     </button>
                 </form>
 
-                <p class="login-hint">
-                    Credenciales de prueba:<br/>
-                    <code>admin@osler.com</code> / <code>Admin123!</code>
-                </p>
+                    <p class="login-hint" style="margin-top: 1rem;">
+                        ¿No tienes cuenta? <a href="register.html">Regístrate como Paciente</a>
+                    </p>
+                    <p class="login-hint" style="margin-top: 0.5rem; font-size: 0.8rem;">
+                        Credenciales de prueba:<br/>
+                        <code>admin@osler.com</code> / <code>Admin123!</code>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -106,8 +110,15 @@
                         email: data.email,
                         rol: data.rol
                     }));
-                    // Redirige al dashboard
-                    window.location.href = 'dashboard.html';
+                    
+                    // Redirige según el rol
+                    if (data.rol === 'PACIENTE') {
+                        window.location.href = 'dashboard-paciente.html';
+                    } else if (data.rol === 'DOCTOR') {
+                        window.location.href = 'dashboard-doctor.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
                 } else {
                     showAlert(data.mensaje || 'Credenciales incorrectas', 'error');
                 }
@@ -147,7 +158,14 @@
 
         // Si ya hay sesión, redirige
         if (localStorage.getItem('osler_token')) {
-            window.location.href = 'dashboard.html';
+            const user = JSON.parse(localStorage.getItem('osler_user'));
+            if (user && user.rol === 'PACIENTE') {
+                window.location.href = 'dashboard-paciente.html';
+            } else if (user && user.rol === 'DOCTOR') {
+                window.location.href = 'dashboard-doctor.html';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
         }
     </script>
 </body>

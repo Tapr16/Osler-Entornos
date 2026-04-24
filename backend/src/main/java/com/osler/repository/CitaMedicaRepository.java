@@ -18,4 +18,7 @@ public interface CitaMedicaRepository extends JpaRepository<CitaMedica, Long> {
            "LOWER(c.doctor.apellido) LIKE LOWER(CONCAT('%',:q,'%')) OR " +
            "LOWER(c.motivo) LIKE LOWER(CONCAT('%',:q,'%'))")
     List<CitaMedica> buscar(@Param("q") String query);
+
+    List<CitaMedica> findByPacienteEmailOrderByFechaHoraDesc(String email);
+    List<CitaMedica> findByDoctorEmailOrderByFechaHoraDesc(String email);
 }

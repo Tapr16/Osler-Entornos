@@ -63,6 +63,12 @@ public class Paciente {
     @Column(name = "tipo_sangre")
     private TipoSangre tipoSangre;
 
+    @Column(name = "contacto_emergencia_nombre", length = 100)
+    private String contactoEmergenciaNombre;
+
+    @Column(name = "contacto_emergencia_telefono", length = 20)
+    private String contactoEmergenciaTelefono;
+
     @Column(nullable = false)
     private Boolean activo = true;
 

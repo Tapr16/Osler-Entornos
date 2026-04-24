@@ -1,6 +1,7 @@
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\repository\UsuarioRepository.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\dto\AuthDTOs.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\dto\DoctorDTO.java
+Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\dto\HistorialClinicoDTO.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\entity\Rol.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\dto\CitaMedicaDTO.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\controller\AuthController.java
@@ -8,12 +9,14 @@ Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\controller\Cita
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\entity\Doctor.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\repository\CitaMedicaRepository.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\repository\DoctorRepository.java
+Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\repository\HistorialClinicoRepository.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\config\DataInitializer.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\entity\Usuario.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\security\JwtAuthFilter.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\dto\PacienteDTO.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\controller\PacienteController.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\controller\DoctorController.java
+Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\controller\HistorialClinicoController.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\repository\EspecialidadRepository.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\entity\Especialidad.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\security\UserDetailsServiceImpl.java
@@ -21,5 +24,6 @@ Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\repository\Paci
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\OslerApplication.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\config\SecurityConfig.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\entity\CitaMedica.java
+Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\entity\HistorialClinico.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\entity\Paciente.java
 Z:\Progamacion\AntiGravity\Osler\backend\src\main\java\com\osler\security\JwtUtil.java

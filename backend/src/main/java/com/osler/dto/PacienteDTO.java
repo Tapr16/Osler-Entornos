@@ -18,7 +18,9 @@ public class PacienteDTO {
         @Email(message = "Email inválido") String email,
         String direccion,
         String ciudad,
-        Paciente.TipoSangre tipoSangre
+        Paciente.TipoSangre tipoSangre,
+        String contactoEmergenciaNombre,
+        String contactoEmergenciaTelefono
     ) {}
 
     public record Response(
@@ -34,6 +36,8 @@ public class PacienteDTO {
         String direccion,
         String ciudad,
         Paciente.TipoSangre tipoSangre,
+        String contactoEmergenciaNombre,
+        String contactoEmergenciaTelefono,
         Boolean activo,
         String createdAt
     ) {}
@@ -46,7 +50,10 @@ public class PacienteDTO {
             p.getFechaNacimiento(), p.getGenero(),
             p.getTelefono(), p.getEmail(),
             p.getDireccion(), p.getCiudad(),
-            p.getTipoSangre(), p.getActivo(),
+            p.getTipoSangre(),
+            p.getContactoEmergenciaNombre(),
+            p.getContactoEmergenciaTelefono(),
+            p.getActivo(),
             p.getCreatedAt() != null ? p.getCreatedAt().toString() : null
         );
     }

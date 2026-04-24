@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface EspecialidadRepository extends JpaRepository<Especialidad, Long> {
     List<Especialidad> findAllByOrderByNombreAsc();
+    java.util.Optional<Especialidad> findByNombre(String nombre);
 }

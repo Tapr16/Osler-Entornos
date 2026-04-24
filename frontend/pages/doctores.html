@@ -52,7 +52,10 @@
                 <input type="text" id="searchInput" placeholder="Buscar por nombre, licencia o especialidad…" />
                 <button onclick="buscar()">🔍</button>
             </div>
-            <button class="btn-primary" onclick="abrirModal()">➕ Nuevo Doctor</button>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="btn-secondary" onclick="abrirModalEspecialidad()">✨ Nueva Especialidad</button>
+                <button class="btn-primary" onclick="abrirModal()">➕ Nuevo Doctor</button>
+            </div>
         </div>
 
         <!-- Alerta global -->
@@ -152,6 +155,29 @@
         <div class="modal-footer">
             <button class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
             <button class="btn-primary" id="btnGuardar" onclick="guardar()">💾 Guardar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL Nueva Especialidad -->
+<div class="modal-overlay" id="modalOverlayEsp" onclick="cerrarModalEspSiClick(event)">
+    <div class="modal modal-sm" id="modalEsp">
+        <div class="modal-header">
+            <h3>Nueva Especialidad</h3>
+            <button class="modal-close" onclick="cerrarModalEsp()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div id="modalAlertEsp" class="alert hidden"></div>
+            <form id="espForm">
+                <div class="form-group">
+                    <label>Nombre de la especialidad *</label>
+                    <input type="text" id="fNombreEsp" required placeholder="Ej: Cardiología" />
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="cerrarModalEsp()">Cancelar</button>
+            <button class="btn-primary" onclick="guardarEspecialidad()">✨ Crear</button>
         </div>
     </div>
 </div>

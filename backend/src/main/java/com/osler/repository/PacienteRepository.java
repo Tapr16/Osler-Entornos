@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     Optional<Paciente> findByNumeroDocumento(String numeroDocumento);
+    Optional<Paciente> findByEmail(String email);
 
     boolean existsByNumeroDocumento(String numeroDocumento);
 

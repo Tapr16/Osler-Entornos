@@ -10,6 +10,7 @@ import java.util.List;
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     boolean existsByNumeroLicencia(String numeroLicencia);
+    java.util.Optional<Doctor> findByEmail(String email);
 
     List<Doctor> findByActivoTrue();
 

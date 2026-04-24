@@ -97,11 +97,11 @@ function abrirModal(id = null) {
     limpiarModal();
     document.getElementById('doctorId').value = id || '';
     document.getElementById('modalTitle').textContent = id ? 'Editar Doctor' : 'Nuevo Doctor';
-    document.getElementById('modalOverlay').classList.add('active');
+    document.getElementById('modalOverlay').classList.remove('hidden');
 }
 
 function cerrarModal() {
-    document.getElementById('modalOverlay').classList.remove('active');
+    document.getElementById('modalOverlay').classList.add('hidden');
 }
 
 function cerrarModalSiClick(e) {
@@ -188,11 +188,11 @@ async function guardar() {
 function pedirEliminar(id, nombre) {
     doctorIdEliminar = id;
     document.getElementById('deleteNombre').textContent = nombre;
-    document.getElementById('deleteOverlay').classList.add('active');
+    document.getElementById('deleteOverlay').classList.remove('hidden');
 }
 
 function cerrarDelete() {
-    document.getElementById('deleteOverlay').classList.remove('active');
+    document.getElementById('deleteOverlay').classList.add('hidden');
     doctorIdEliminar = null;
 }
 
@@ -279,11 +279,11 @@ function showModalAlert(msg, type) {
 function abrirModalEspecialidad() {
     document.getElementById('fNombreEsp').value = '';
     document.getElementById('modalAlertEsp').className = 'alert hidden';
-    document.getElementById('modalOverlayEsp').classList.add('active');
+    document.getElementById('modalOverlayEsp').classList.remove('hidden');
 }
 
 function cerrarModalEsp() {
-    document.getElementById('modalOverlayEsp').classList.remove('active');
+    document.getElementById('modalOverlayEsp').classList.add('hidden');
 }
 
 function cerrarModalEspSiClick(e) {

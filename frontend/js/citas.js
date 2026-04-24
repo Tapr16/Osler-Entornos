@@ -103,11 +103,11 @@ function abrirModal(id = null) {
     limpiarModal();
     document.getElementById('citaId').value = id || '';
     document.getElementById('modalTitle').textContent = id ? 'Editar Cita' : 'Nueva Cita';
-    document.getElementById('modalOverlay').classList.add('active');
+    document.getElementById('modalOverlay').classList.remove('hidden');
 }
 
 function cerrarModal() {
-    document.getElementById('modalOverlay').classList.remove('active');
+    document.getElementById('modalOverlay').classList.add('hidden');
 }
 
 function cerrarModalSiClick(e) {
@@ -199,11 +199,11 @@ async function guardar() {
 function pedirEliminar(id, nombre) {
     citaIdEliminar = id;
     document.getElementById('deleteNombre').textContent = nombre;
-    document.getElementById('deleteOverlay').classList.add('active');
+    document.getElementById('deleteOverlay').classList.remove('hidden');
 }
 
 function cerrarDelete() {
-    document.getElementById('deleteOverlay').classList.remove('active');
+    document.getElementById('deleteOverlay').classList.add('hidden');
     citaIdEliminar = null;
 }
 

@@ -87,11 +87,11 @@
 <!-- ============================================================
      MODAL — Crear / Editar Paciente
      ============================================================ -->
-<div class="modal-overlay" id="modalOverlay" onclick="cerrarModalSiClick(event)">
-    <div class="modal" id="modal">
+<div class="modal hidden" id="modalOverlay" onclick="cerrarModalSiClick(event)">
+    <div class="modal-content" id="modal">
         <div class="modal-header">
             <h3 id="modalTitle">Nuevo Paciente</h3>
-            <button class="modal-close" onclick="cerrarModal()">✕</button>
+            <button class="btn-close" onclick="cerrarModal()">✕</button>
         </div>
 
         <div class="modal-body">
@@ -197,11 +197,11 @@
 </div>
 
 <!-- MODAL Confirmar eliminación -->
-<div class="modal-overlay" id="deleteOverlay" onclick="cerrarDeleteSiClick(event)">
-    <div class="modal modal-sm" id="deleteModal">
+<div class="modal hidden" id="deleteOverlay" onclick="cerrarDeleteSiClick(event)">
+    <div class="modal-content" id="deleteModal" style="max-width: 400px;">
         <div class="modal-header">
             <h3>Confirmar eliminación</h3>
-            <button class="modal-close" onclick="cerrarDelete()">✕</button>
+            <button class="btn-close" onclick="cerrarDelete()">✕</button>
         </div>
         <div class="modal-body">
             <p>¿Estás seguro de que deseas eliminar al paciente <strong id="deleteNombre"></strong>?</p>

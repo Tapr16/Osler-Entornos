@@ -47,6 +47,27 @@
             gap: 0.5rem;
             margin-bottom: 1rem;
         }
+        .btn-historial {
+            background: rgba(10, 110, 189, 0.1);
+            color: var(--color-primary);
+            border: 1px solid rgba(10, 110, 189, 0.2);
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-historial:hover {
+            background: var(--color-primary);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10, 110, 189, 0.25);
+            border-color: var(--color-primary);
+        }
     </style>
 </head>
 <body>
@@ -290,8 +311,8 @@
                                 <td>${c.motivo}</td>
                                 <td><span class="badge ${c.estado.toLowerCase()}">${c.estado}</span></td>
                                 <td>
-                                    <button class="btn-action btn-edit" onclick="abrirHistorial(${c.pacienteId}, ${c.id}, '${c.pacienteNombre}')">
-                                        ⚕️ Historial
+                                    <button class="btn-historial" onclick="abrirHistorial(${c.pacienteId}, ${c.id}, '${c.pacienteNombre}')">
+                                        <span style="font-size:1.1rem">⚕️</span> Historial
                                     </button>
                                 </td>
                             </tr>

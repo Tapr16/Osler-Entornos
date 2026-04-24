@@ -89,11 +89,11 @@
 <!-- ============================================================
      MODAL — Crear / Editar Doctor
      ============================================================ -->
-<div class="modal-overlay" id="modalOverlay" onclick="cerrarModalSiClick(event)">
-    <div class="modal" id="modal">
+<div class="modal hidden" id="modalOverlay" onclick="cerrarModalSiClick(event)">
+    <div class="modal-content" id="modal">
         <div class="modal-header">
             <h3 id="modalTitle">Nuevo Doctor</h3>
-            <button class="modal-close" onclick="cerrarModal()">✕</button>
+            <button class="btn-close" onclick="cerrarModal()">✕</button>
         </div>
 
         <div class="modal-body">
@@ -160,11 +160,11 @@
 </div>
 
 <!-- MODAL Nueva Especialidad -->
-<div class="modal-overlay" id="modalOverlayEsp" onclick="cerrarModalEspSiClick(event)">
-    <div class="modal modal-sm" id="modalEsp">
+<div class="modal hidden" id="modalOverlayEsp" onclick="cerrarModalEspSiClick(event)">
+    <div class="modal-content" id="modalEsp" style="max-width: 400px;">
         <div class="modal-header">
             <h3>Nueva Especialidad</h3>
-            <button class="modal-close" onclick="cerrarModalEsp()">✕</button>
+            <button class="btn-close" onclick="cerrarModalEsp()">✕</button>
         </div>
         <div class="modal-body">
             <div id="modalAlertEsp" class="alert hidden"></div>
@@ -183,11 +183,11 @@
 </div>
 
 <!-- MODAL Confirmar eliminación -->
-<div class="modal-overlay" id="deleteOverlay" onclick="cerrarDeleteSiClick(event)">
-    <div class="modal modal-sm" id="deleteModal">
+<div class="modal hidden" id="deleteOverlay" onclick="cerrarDeleteSiClick(event)">
+    <div class="modal-content" id="deleteModal" style="max-width: 400px;">
         <div class="modal-header">
             <h3>Confirmar eliminación</h3>
-            <button class="modal-close" onclick="cerrarDelete()">✕</button>
+            <button class="btn-close" onclick="cerrarDelete()">✕</button>
         </div>
         <div class="modal-body">
             <p>¿Estás seguro de que deseas eliminar al doctor <strong id="deleteNombre"></strong>?</p>

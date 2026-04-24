@@ -67,10 +67,6 @@ La base de datos fue diseñada utilizando un **modelo relacional**, representado
 - Calendario
 - Citas médicas
 - Historial clínico
-- Tratamiento
-- Enfermedad
-- Alergia
-- Contacto de emergencia
 
 El diseño garantiza **integridad referencial mediante claves foráneas**, permitiendo una estructura escalable para futuras funcionalidades del sistema.
 
@@ -97,85 +93,8 @@ El diseño garantiza **integridad referencial mediante claves foráneas**, permi
 
 ## 📑 Historial clínico
 - Registro de observaciones médicas
-- Registro de enfermedades
-- Registro de alergias
-- Registro de tratamientos
-
-## 📞 Información adicional
-- Contactos de emergencia para pacientes
 
 ---
-
-# 📁 Estructura del repositorio
-
-```
-Osler-Entornos/
-│
-├── base-de-datos/
-│   └── osler-db.sql                  # Script completo de la BD
-│
-├── backend/
-│   ├── pom.xml                       # Dependencias Maven
-│   └── src/main/java/com/osler/
-│       ├── OslerApplication.java     # Punto de entrada Spring Boot
-│       │
-│       ├── config/
-│       │   ├── DataInitializer.java  # Crea usuario admin al arrancar
-│       │   └── SecurityConfig.java   # Configuración JWT y CORS
-│       │
-│       ├── security/
-│       │   ├── JwtUtil.java          # Generación y validación de tokens
-│       │   ├── JwtAuthFilter.java    # Filtro de autenticación por request
-│       │   └── UserDetailsServiceImpl.java
-│       │
-│       ├── entity/
-│       │   ├── Usuario.java
-│       │   ├── Rol.java
-│       │   ├── Paciente.java
-│       │   ├── Doctor.java
-│       │   ├── Especialidad.java
-│       │   └── CitaMedica.java
-│       │
-│       ├── repository/
-│       │   ├── UsuarioRepository.java
-│       │   ├── PacienteRepository.java
-│       │   ├── DoctorRepository.java
-│       │   ├── EspecialidadRepository.java
-│       │   └── CitaMedicaRepository.java
-│       │
-│       ├── dto/
-│       │   ├── AuthDTOs.java
-│       │   ├── PacienteDTO.java
-│       │   ├── DoctorDTO.java
-│       │   └── CitaMedicaDTO.java
-│       │
-│       └── controller/
-│           ├── AuthController.java        # POST /api/auth/login y /register
-│           ├── PacienteController.java    # CRUD /api/pacientes
-│           ├── DoctorController.java      # CRUD /api/doctores
-│           └── CitaMedicaController.java  # CRUD /api/citas
-│
-└── frontend/
-    ├── css/
-    │   ├── global.css      # Variables y estilos base
-    │   ├── login.css       # Estilos página de login
-    │   ├── dashboard.css   # Estilos dashboard y sidebar
-    │   └── crud.css        # Estilos tablas y modales
-    │
-    ├── js/
-    │   ├── auth.js         # Login, logout, token, apiFetch()
-    │   ├── pacientes.js    # Lógica CRUD pacientes
-    │   ├── doctores.js     # Lógica CRUD doctores
-    │   └── citas.js        # Lógica CRUD citas
-    │
-    └── pages/
-        ├── login.html      # Punto de entrada
-        ├── dashboard.html  # Inicio con estadísticas
-        ├── pacientes.html  # Gestión de pacientes
-        ├── doctores.html   # Gestión de doctores
-        └── citas.html      # Gestión de citas médicas
-```
-
 
 # 🔀 Control de versiones
 

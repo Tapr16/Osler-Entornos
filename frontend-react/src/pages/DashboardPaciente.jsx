@@ -1,6 +1,7 @@
 // src/pages/DashboardPaciente.jsx — Panel del Paciente
 import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import CalendarioCitas from '../components/CalendarioCitas';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 
@@ -23,8 +24,8 @@ export default function DashboardPaciente() {
   const { user } = useAuth();
   const [citas, setCitas] = useState([]);
   const [historial, setHistorial] = useState([]);
-  const [pacienteInfo, setPacienteInfo] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [calOpen, setCalOpen] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -35,7 +36,6 @@ export default function DashboardPaciente() {
           api.get(`/pacientes/email/${encodeURIComponent(user.email)}`),
         ]);
         setCitas(resCitas.data);
-        setPacienteInfo(resPac.data);
 
         if (resPac.data?.id) {
           const resHist = await api.get(`/historial-clinico/paciente/${resPac.data.id}`);
@@ -62,8 +62,15 @@ export default function DashboardPaciente() {
             <h2>Bienvenido, {user?.nombre} 👋</h2>
             <p>Tu portal de salud personal</p>
           </div>
+          <button
+            className={`btn ${calOpen ? 'btn-primary' : 'btn-secondary'}`}
+            onClick={() => setCalOpen(o => !o)}
+          >
+            📅 {calOpen ? 'Ocultar calendario' : 'Ver calendario'}
+          </button>
         </div>
 
+        {/* Métricas — sin "Registros médicos" */}
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-icon blue">📅</div>
@@ -77,12 +84,19 @@ export default function DashboardPaciente() {
             <div className="stat-icon green">✅</div>
             <div><div className="stat-value">{pasadas.length}</div><div className="stat-label">Citas pasadas</div></div>
           </div>
-          <div className="stat-card">
-            <div className="stat-icon cyan">📋</div>
-            <div><div className="stat-value">{historial.length}</div><div className="stat-label">Registros médicos</div></div>
-          </div>
         </div>
 
+        {/* Calendario colapsable */}
+        {calOpen && (
+          <div className="cal-collapse">
+            <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: '1rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+              Calendario de Citas
+            </h3>
+            <CalendarioCitas citas={citas} labelDoctor={false} />
+          </div>
+        )}
+
+        {/* Tabla: Mis Próximas Citas */}
         <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: '1rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
           Mis Próximas Citas
         </h3>
@@ -107,6 +121,7 @@ export default function DashboardPaciente() {
           </table>
         </div>
 
+        {/* Tabla: Mi Historial Clínico */}
         <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: '1rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
           Mi Historial Clínico
         </h3>

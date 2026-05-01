@@ -43,6 +43,26 @@ app.use((err, req, res, next) => {
 
 // ── Start ─────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+const pool = require('./config/db');
+
+app.listen(PORT, async () => {
   console.log(`🚀 Osler Backend (Node.js) corriendo en http://localhost:${PORT}`);
+
+  // Sincronizar estados de citas al arrancar
+  try {
+    await pool.query(`
+      UPDATE citas_medicas SET estado = 'EN_CURSO'
+      WHERE estado = 'PROGRAMADA'
+        AND fecha_hora <= NOW()
+        AND DATE_ADD(fecha_hora, INTERVAL duracion_min MINUTE) > NOW()
+    `);
+    await pool.query(`
+      UPDATE citas_medicas SET estado = 'COMPLETADA'
+      WHERE estado IN ('PROGRAMADA','EN_CURSO')
+        AND DATE_ADD(fecha_hora, INTERVAL duracion_min MINUTE) <= NOW()
+    `);
+    console.log('✅ Estados de citas sincronizados');
+  } catch (err) {
+    console.error('⚠️  Error sincronizando estados:', err.message);
+  }
 });

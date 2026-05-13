@@ -10,6 +10,7 @@ const ESTADO_LABELS = {
   EN_CURSO:   '🔵 En curso',
   COMPLETADA: '🟢 Completada',
   CANCELADA:  '🔴 Cancelada',
+  NO_ASISTIO: '⚫ No asistió',
 };
 
 function formatDT(str) {
@@ -51,7 +52,7 @@ export default function DashboardPaciente() {
   }, [user]);
 
   const proximas = citas.filter(c => c.estado === 'PROGRAMADA' || c.estado === 'EN_CURSO');
-  const pasadas  = citas.filter(c => c.estado === 'COMPLETADA' || c.estado === 'CANCELADA');
+  const pasadas  = citas.filter(c => c.estado === 'COMPLETADA' || c.estado === 'CANCELADA' || c.estado === 'NO_ASISTIO');
 
   return (
     <div className="app-shell">
@@ -109,6 +110,31 @@ export default function DashboardPaciente() {
               {loading ? <tr><td colSpan={5} className="loading-row">Cargando…</td></tr>
                : proximas.length === 0 ? <tr><td colSpan={5} className="empty-row">No tienes citas próximas</td></tr>
                : proximas.map((c, i) => (
+                <tr key={c.id}>
+                  <td>{i + 1}</td>
+                  <td><strong>Dr. {c.doctorNombre}</strong></td>
+                  <td>{formatDT(c.fechaHora)}</td>
+                  <td>{c.motivo || '—'}</td>
+                  <td><span className={`badge badge-${c.estado}`}>{ESTADO_LABELS[c.estado] || c.estado}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Tabla: Mi Historial Clínico */}
+        <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: '1rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+          Mis Citas Pasadas
+        </h3>
+        <div className="table-wrapper" style={{ marginBottom: 32 }}>
+          <table>
+            <thead>
+              <tr><th>#</th><th>Doctor</th><th>Fecha y Hora</th><th>Motivo</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              {loading ? <tr><td colSpan={5} className="loading-row">Cargando…</td></tr>
+               : pasadas.length === 0 ? <tr><td colSpan={5} className="empty-row">No tienes citas pasadas</td></tr>
+               : pasadas.map((c, i) => (
                 <tr key={c.id}>
                   <td>{i + 1}</td>
                   <td><strong>Dr. {c.doctorNombre}</strong></td>

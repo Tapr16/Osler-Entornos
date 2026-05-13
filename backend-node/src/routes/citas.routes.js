@@ -42,6 +42,15 @@ const SELECT_CITAS = `
   JOIN doctores d  ON d.id = c.doctor_id
 `;
 
+// Convierte cualquier fecha/ISO a 'YYYY-MM-DD HH:MM:SS' que MySQL acepta
+function toMySQLDateTime(val) {
+  const d = new Date(val);
+  if (isNaN(d)) return val; // devuelve el valor original si no es parseable
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ` +
+         `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
+
 // ================================================================
 // Helper: calcula el estado automático según la fecha/hora actual.
 // Solo aplica cuando NO hay un estado manual (CANCELADA/NO_ASISTIO).
@@ -230,7 +239,7 @@ router.post(
       const [result] = await pool.query(
         `INSERT INTO citas_medicas (paciente_id, doctor_id, fecha_hora, duracion_min, motivo, estado, notas)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [pacienteId, doctorId, fechaHora, duracion, motivo || null, estadoFinal, notas || null]
+        [pacienteId, doctorId, toMySQLDateTime(fechaHora), duracion, motivo || null, estadoFinal, notas || null]
       );
 
       const [[newRow]] = await pool.query(`${SELECT_CITAS} WHERE c.id = ?`, [result.insertId]);
@@ -310,7 +319,7 @@ router.put(
            paciente_id = ?, doctor_id = ?, fecha_hora = ?,
            duracion_min = ?, motivo = ?, estado = ?, notas = ?
          WHERE id = ?`,
-        [pacienteId, doctorId, fechaHora, duracion, motivo || null,
+        [pacienteId, doctorId, toMySQLDateTime(fechaHora), duracion, motivo || null,
           estadoFinal, notas || null, req.params.id]
       );
 
